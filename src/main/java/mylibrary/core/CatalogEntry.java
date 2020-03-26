@@ -1,41 +1,51 @@
 package mylibrary.core;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 public class CatalogEntry {
+	public final Book book;
 	private int onHandCount;
 	private int totalCount;
 
-	public CatalogEntry(int count) {
+	public CatalogEntry(Book book, int count) {
+		this.book = Objects.requireNonNull(book);
 		this.onHandCount = count;
 		this.totalCount = count;
 	}
 
 	@Override
     public String toString() {
-        return new StringBuilder(6)
-            .append("CatalogEntry {")
-            .append("\n    On hand:     ").append(this.onHandCount)
-            .append("\n    Total count: ").append(this.totalCount)
-            .append("\n}")
-            .toString();
+        return "CatalogEntry {" +
+			"\n    Book {" +
+			"\n        Authors: " + Arrays.toString(this.book.authors) +
+			"\n        Title:   " + this.book.title +
+			"\n        Year:    " + this.book.year +
+			"\n        Genre:   " + this.book.genre +
+			"\n    }" +
+			"\n    On hand:     " + this.onHandCount +
+			"\n    Total count: " + this.totalCount +
+			"\n}\n";
     }
 
-    private boolean equals(CatalogEntry other) {
-    	return (this.onHandCount() == other.onHandCount())
-    		&& (this.totalCount() == other.totalCount());
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		} else if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		CatalogEntry that = (CatalogEntry) o;
+		return onHandCount == that.onHandCount &&
+			totalCount == that.totalCount &&
+			Objects.equals(book, that.book);
+	}
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        } else if (other instanceof CatalogEntry) {
-            return this.equals((CatalogEntry) other);
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(book, onHandCount, totalCount);
+	}
 
 	public void add(int count) {
 		this.onHandCount += count;
@@ -51,15 +61,15 @@ public class CatalogEntry {
 		return f;
 	}
 
-	public boolean borrow(int count) {
+	public Optional<Book> borrow(int count) {
 		boolean f = count <= this.onHandCount;
 		if (f) {
 			this.onHandCount -= count;
 		}
-		return f;
+		return f ? Optional.of(this.book) : Optional.empty();
 	}
 
-	public boolean giveBack(int count) {
+	public boolean returnBack(int count) {
 		boolean f = (this.onHandCount + count) <= this.totalCount;
 		if (f) {
 			this.onHandCount += count;

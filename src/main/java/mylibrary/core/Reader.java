@@ -13,27 +13,23 @@ public class Reader {
 
     @Override
     public String toString() {
-        return new StringBuilder(6)
-            .append("Reader {")
-            .append("\n    First name: ").append(this.firstName)
-            .append("\n    Last name:  ").append(this.lastName)
-            .append("\n}")
-            .toString();
-    }
-
-    private boolean equals(Reader other) {
-    	return (this.firstName == other.firstName)
-    		&& (this.lastName == other.lastName);
+        return firstName + ' ' + lastName;
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
-        } else if (other instanceof Reader) {
-            return this.equals((Reader) other);
-        } else {
+        } else if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        Reader reader = (Reader) o;
+        return Objects.equals(firstName, reader.firstName) &&
+            Objects.equals(lastName, reader.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName);
     }
 }

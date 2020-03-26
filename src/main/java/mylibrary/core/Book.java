@@ -18,31 +18,28 @@ public class Book {
 
     @Override
     public String toString() {
-        return new StringBuilder(10)
-            .append("Book {")
-            .append("\n    Authors: ").append(Arrays.toString(this.authors))
-            .append("\n    Title:   ").append(this.title)
-            .append("\n    Year:    ").append(this.year)
-            .append("\n    Genre:   ").append(this.genre)
-            .append("\n}")
-            .toString();
-    }
-
-    private boolean equals(Book other) {
-        return Arrays.equals(this.authors, other.authors)
-            && (this.title == other.title)
-            && (this.year == other.year)
-            && (this.genre == other.genre);
+        return "Book {" +
+            "\n    Authors: " + Arrays.toString(this.authors) +
+            "\n    Title:   " + this.title +
+            "\n    Year:    " + this.year +
+            "\n    Genre:   " + this.genre +
+            "\n}";
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        } else if (other instanceof Book) {
-            return this.equals((Book) other);
-        } else {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return year == book.year &&
+            Arrays.equals(authors, book.authors) &&
+            Objects.equals(title, book.title) &&
+            genre == book.genre;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(title, year, genre);
+        return 31 * result + Arrays.hashCode(authors);
     }
 }

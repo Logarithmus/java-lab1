@@ -1,15 +1,14 @@
 package mylibrary.core;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Library {
-	public final Map<Book, CatalogEntry> books;
-    public final Map<Reader, ReaderEntry> readers;
+	public final List<CatalogEntry> catalog;
+    public final List<ReaderEntry> readers;
 
 	public Library() {
-		this.books = new HashMap<>();
-		this.readers = new HashMap<>();
+		this.catalog = new ArrayList<>();
+		this.readers = new ArrayList<>();
 	}
 }
